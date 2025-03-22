@@ -38,8 +38,11 @@ input_video_path = f'videos/test_{name}.MOV'
 output_video_path = f'videos/test_vids/test_{name}.MOV'
 
 # Open video PICK ONE
-cap = cv2.VideoCapture(input_video_path)
-#cap = cv2.VideoCapture(0)
+camera = False
+if not camera:  
+    cap = cv2.VideoCapture(input_video_path)
+else:
+    cap = cv2.VideoCapture(0)
 
 
 if not cap.isOpened():
@@ -47,8 +50,10 @@ if not cap.isOpened():
     exit()
 
 # Get video properties CHOOSE ONE
-fps = int(cap.get(cv2.CAP_PROP_FPS))
-#fps = 30
+if not camera:
+    fps = int(cap.get(cv2.CAP_PROP_FPS))
+else:
+    fps = 30
 
 # Set resized dimensions
 new_width, new_height = 720, 400
@@ -153,25 +158,44 @@ while cap.isOpened():
             cv2.circle(image, left_hip, 5, (165, 42, 42), -1)
 
     # Rotate the frame 90 degrees clockwise
-    image_rotated = cv2.rotate(image, cv2.ROTATE_90_CLOCKWISE)
+    if fps !=30:
+        image_rotated = cv2.rotate(image, cv2.ROTATE_90_CLOCKWISE)
 
-    # Add text AFTER rotation to keep it upright
-    if hip_angle is not None:
-        cv2.putText(image_rotated, f"Hip Angle: {hip_angle:.1f}", (10, 90),
-                    cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2)
-    if neck_angle is not None:
-        cv2.putText(image_rotated, f"Neck Angle: {neck_angle:.1f}", (10, 130),
-                    cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 0), 2)
-    cv2.putText(image_rotated, f"Posture: {posture_status}", (10, 50),
-                cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0) if posture_status == "Good" else (0, 0, 255), 2)
+        # Add text AFTER rotation to keep it upright
+        if hip_angle is not None:
+            cv2.putText(image_rotated, f"Hip Angle: {hip_angle:.1f}", (10, 90),
+                        cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2)
+        if neck_angle is not None:
+            cv2.putText(image_rotated, f"Neck Angle: {neck_angle:.1f}", (10, 130),
+                        cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 0), 2)
+        cv2.putText(image_rotated, f"Posture: {posture_status}", (10, 50),
+                    cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0) if posture_status == "Good" else (0, 0, 255), 2)
 
-    # Write frame to output video
-    out.write(image_rotated)
+        # Write frame to output video
+        out.write(image_rotated)
 
-    # Show video
-    cv2.imshow('Posture Tracker', image_rotated)
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
+        # Show video
+        cv2.imshow('Posture Tracker', image_rotated)
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+    else:
+        # Add text AFTER rotation to keep it upright
+        if hip_angle is not None:
+            cv2.putText(image, f"Hip Angle: {hip_angle:.1f}", (10, 90),
+                        cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2)
+        if neck_angle is not None:
+            cv2.putText(image, f"Neck Angle: {neck_angle:.1f}", (10, 130),
+                        cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 0), 2)
+        cv2.putText(image, f"Posture: {posture_status}", (10, 50),
+                    cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0) if posture_status == "Good" else (0, 0, 255), 2)
+
+        # Write frame to output video
+        out.write(image)
+
+        # Show video
+        cv2.imshow('Posture Tracker', image)
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
 
 # Release resources
 cap.release()
