@@ -6,7 +6,8 @@ import csv
 import os
 
 # !!!!!!!CHANGE AS NEEDED!!!!!!!
-camera = True
+camera = False
+name = 'mike+angela' #only needed if using video file
 
 # Initialize MediaPipe Pose
 mp_pose = mp.solutions.pose
@@ -33,7 +34,6 @@ def calculate_angle(p1, p2, p3):
     return angle
 
 # Input and output video paths
-name = 'mike+angela'
 
 #COMMENT OUT IF USING LIVE FEED
 input_video_path = f'videos/test_{name}.MOV'  
