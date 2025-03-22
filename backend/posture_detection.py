@@ -29,17 +29,25 @@ def calculate_angle(p1, p2, p3):
     return angle
 
 # Input and output video paths
-input_video_path = 'test_long.MOV'  
-output_video_path = 'output_video.MOV'
+name = 'mike+angela'
 
-# Open video
+#COMMENT OUT IF USING LIVE FEED
+input_video_path = f'videos/test_{name}.MOV'  
+
+output_video_path = f'videos/test_vids/test_{name}.MOV'
+
+# Open video PICK ONE
 cap = cv2.VideoCapture(input_video_path)
+#cap = cv2.VideoCapture(0)
+
+
 if not cap.isOpened():
     print("Error: Could not open video.")
     exit()
 
-# Get video properties
+# Get video properties CHOOSE ONE
 fps = int(cap.get(cv2.CAP_PROP_FPS))
+#fps = 30
 
 # Set resized dimensions
 new_width, new_height = 720, 400
@@ -49,7 +57,7 @@ fourcc = cv2.VideoWriter_fourcc(*'mp4v')
 out = cv2.VideoWriter(output_video_path, fourcc, fps, (new_height, new_width))  
 
 # Setup CSV
-filename = 'data.csv'
+filename = f'backend/datasets/{name}.csv'
 if os.path.exists(filename):
     os.remove(filename)
 
@@ -108,7 +116,7 @@ while cap.isOpened():
                     posture_status = "Bad Posture"
                     
             # Write to CSV
-            data = [posture_status, neck_status]
+            data = [posture_status, hip_angle, neck_angle]
             for i in range(len(landmarks)):
                 data.append(landmarks[i].x)
                 data.append(landmarks[i].y)
