@@ -5,6 +5,9 @@ import numpy as np
 import csv
 import os
 
+# !!!!!!!CHANGE AS NEEDED!!!!!!!
+camera = True
+
 # Initialize MediaPipe Pose
 mp_pose = mp.solutions.pose
 mp_drawing = mp.solutions.drawing_utils
@@ -38,7 +41,6 @@ input_video_path = f'videos/test_{name}.MOV'
 output_video_path = f'videos/test_vids/test_{name}.MOV'
 
 # Open video PICK ONE
-camera = False
 if not camera:  
     cap = cv2.VideoCapture(input_video_path)
 else:
