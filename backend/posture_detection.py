@@ -1,3 +1,4 @@
+#best with neck
 import cv2
 import mediapipe as mp
 import numpy as np
@@ -156,12 +157,12 @@ while cap.isOpened():
 
     # Add text AFTER rotation to keep it upright
     if hip_angle is not None:
-        cv2.putText(image_rotated, f"Hip Angle: {hip_angle:.1f}", (10, 50),
+        cv2.putText(image_rotated, f"Hip Angle: {hip_angle:.1f}", (10, 90),
                     cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2)
     if neck_angle is not None:
-        cv2.putText(image_rotated, f"Neck Angle: {neck_angle:.1f}", (10, 90),
+        cv2.putText(image_rotated, f"Neck Angle: {neck_angle:.1f}", (10, 130),
                     cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 0), 2)
-    cv2.putText(image_rotated, f"Posture: {posture_status}", (10, 130),
+    cv2.putText(image_rotated, f"Posture: {posture_status}", (10, 50),
                 cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0) if posture_status == "Good" else (0, 0, 255), 2)
 
     # Write frame to output video
