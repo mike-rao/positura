@@ -29,7 +29,7 @@ def calculate_angle(p1, p2, p3):
     return angle
 
 # Input and output video paths
-input_video_path = 'test_long.MOV'  
+input_video_path = 'test.MOV'  
 output_video_path = 'output_video.MOV'
 
 # Open video
@@ -52,6 +52,10 @@ out = cv2.VideoWriter(output_video_path, fourcc, fps, (new_height, new_width))
 filename = 'data.csv'
 if os.path.exists(filename):
     os.remove(filename)
+
+# Toggle variables
+show_text = True
+show_visuals = True
 
 # Process video
 while cap.isOpened():
@@ -83,30 +87,27 @@ while cap.isOpened():
             left_knee = (int(landmarks[25].x * new_width), int(landmarks[25].y * new_height))
             nose = (int(landmarks[0].x * new_width), int(landmarks[0].y * new_height))
 
-            # Chest midpoint (average of shoulders)
-            chest_x = (left_shoulder[0] + right_shoulder[0]) // 2
-            chest_y = (left_shoulder[1] + right_shoulder[1]) // 2
-            chest = (chest_x, chest_y)
-
-            # Neck position (slightly above chest)
-            neck = (chest_x, chest_y - 20)  
-
             # Calculate angles
             hip_angle = calculate_angle(left_shoulder, left_hip, left_knee)
             neck_angle = calculate_angle(nose, left_shoulder, left_hip)
 
-            # Determine  posture
+            # Determine posture
             if hip_angle is not None:
-                if 85 < hip_angle < 110 and 120 < neck_angle < 150:
-                    # Hip angle is good, now check the neck
-                        posture_status = "Good"
-                elif hip_angle <= 85:
+                if 80 < hip_angle < 100:
+                    posture_status = "Good"
+                elif hip_angle <= 80:
                     posture_status = "Slouch"
-                elif hip_angle >= 100:
-                    posture_status = "Lean Back"
                 else:
-                    posture_status = "Bad Posture"
-                    
+                    posture_status = "Lean Back"
+
+            if neck_angle is not None:
+                if 85 < neck_angle < 105:
+                    neck_status = "Good"
+                elif neck_angle < 85:
+                    neck_status = "Forward Head"
+                else:
+                    neck_status = "Tilted Back"
+
             # Write to CSV
             data = [posture_status, neck_status]
             for i in range(len(landmarks)):
@@ -121,48 +122,40 @@ while cap.isOpened():
             print(f"Error processing landmarks: {e}")
 
         # Draw pose landmarks
-        mp_drawing.draw_landmarks(
-            image, results.pose_landmarks, mp_pose.POSE_CONNECTIONS,
-            mp_drawing.DrawingSpec(color=(0, 255, 0), thickness=2, circle_radius=2),
-            mp_drawing.DrawingSpec(color=(0, 0, 255), thickness=2)
-        )
-
-        # Draw hip angle visualization
-        if hip_angle is not None:
-            cv2.line(image, left_shoulder, left_hip, (255, 255, 0), 3)
-            cv2.line(image, left_hip, left_knee, (255, 255, 0), 3)
-            cv2.circle(image, left_shoulder, 5, (0, 0, 255), -1)
-            cv2.circle(image, left_hip, 5, (0, 255, 0), -1)
-            cv2.circle(image, left_knee, 5, (255, 0, 0), -1)
-
-        # Draw neck angle visualization
-        if neck_angle is not None:
-            cv2.line(image, nose, left_shoulder, (0, 255, 255), 3)
-            cv2.line(image, left_shoulder, left_hip, (0, 255, 255), 3)
-            cv2.circle(image, nose, 5, (255, 165, 0), -1)
-            cv2.circle(image, left_shoulder, 5, (0, 165, 255), -1)
-            cv2.circle(image, left_hip, 5, (165, 42, 42), -1)
+        if show_visuals:
+            mp_drawing.draw_landmarks(
+                image, results.pose_landmarks, mp_pose.POSE_CONNECTIONS,
+                mp_drawing.DrawingSpec(color=(0, 255, 0), thickness=2, circle_radius=2),
+                mp_drawing.DrawingSpec(color=(0, 0, 255), thickness=2)
+            )
 
     # Rotate the frame 90 degrees clockwise
     image_rotated = cv2.rotate(image, cv2.ROTATE_90_CLOCKWISE)
 
     # Add text AFTER rotation to keep it upright
-    if hip_angle is not None:
-        cv2.putText(image_rotated, f"Hip Angle: {hip_angle:.1f}", (10, 50),
-                    cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2)
-    if neck_angle is not None:
-        cv2.putText(image_rotated, f"Neck Angle: {neck_angle:.1f}", (10, 90),
-                    cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 0), 2)
-    cv2.putText(image_rotated, f"Posture: {posture_status}", (10, 130),
-                cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0) if posture_status == "Good" else (0, 0, 255), 2)
+    if show_text:
+        if hip_angle is not None:
+            cv2.putText(image_rotated, f"Hip Angle: {hip_angle:.1f}°", (10, 90),
+                        cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2)
+        if neck_angle is not None:
+            cv2.putText(image_rotated, f"Neck Angle: {neck_angle:.1f}°", (10, 130),
+                        cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 0), 2)
+        cv2.putText(image_rotated, f"Posture: {posture_status}", (10, 50),
+                    cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0) if posture_status == "Good" else (0, 0, 255), 2)
 
     # Write frame to output video
     out.write(image_rotated)
 
     # Show video
     cv2.imshow('Posture Tracker', image_rotated)
-    if cv2.waitKey(1) & 0xFF == ord('q'):
+
+    key = cv2.waitKey(1) & 0xFF
+    if key == ord('q'):
         break
+    elif key == ord('1'):
+        show_text = not show_text
+    elif key == ord('2'):
+        show_visuals = not show_visuals
 
 # Release resources
 cap.release()
