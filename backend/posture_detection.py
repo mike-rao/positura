@@ -29,9 +29,8 @@ def calculate_angle(p1, p2, p3):
     return angle
 
 # Input and output video paths
-path = 'haoze'
-input_video_path = 'videos/test_' + path + '.MOV'  
-output_video_path = 'videos/ouput_vids/' +path+ '.MOV'
+input_video_path = 'test_long.MOV'  
+output_video_path = 'output_video.MOV'
 
 # Open video
 cap = cv2.VideoCapture(input_video_path)
@@ -49,17 +48,8 @@ new_width, new_height = 720, 400
 fourcc = cv2.VideoWriter_fourcc(*'mp4v')
 out = cv2.VideoWriter(output_video_path, fourcc, fps, (new_height, new_width))  
 
-#set up csv headers
-filename = 'backend/training_data/' + path + '.csv'
-header = []
-file_path = 'backend/training_data/' + path + '.csv'
-if os.path.exists(file_path):
-    os.remove(file_path)
-    #print(f"File '{file_path}' has been removed.")
-else:
-    print(f"File '{file_path}' does not exist.")
-
 # Setup CSV
+filename = 'data.csv'
 if os.path.exists(filename):
     os.remove(filename)
 
@@ -103,11 +93,11 @@ while cap.isOpened():
 
             # Calculate angles
             hip_angle = calculate_angle(left_shoulder, left_hip, left_knee)
-            neck_angle = calculate_angle(chest, neck, nose)
+            neck_angle = calculate_angle(nose, left_shoulder, left_hip)
 
             # Determine hip posture
             if hip_angle is not None:
-                if 80 < hip_angle < 100:
+                if 85 < hip_angle < 100:
                     posture_status = "Good"
                 elif hip_angle <= 80:
                     posture_status = "Slouch"
@@ -124,9 +114,7 @@ while cap.isOpened():
                     neck_status = "Tilted Back"
 
             # Write to CSV
-            data = []
-            data.append(posture_status)
-            data.append(neck_status)
+            data = [posture_status, neck_status]
             for i in range(len(landmarks)):
                 data.append(landmarks[i].x)
                 data.append(landmarks[i].y)
@@ -155,11 +143,11 @@ while cap.isOpened():
 
         # Draw neck angle visualization
         if neck_angle is not None:
-            cv2.line(image, chest, neck, (0, 255, 255), 3)
-            cv2.line(image, neck, nose, (0, 255, 255), 3)
-            cv2.circle(image, chest, 5, (255, 165, 0), -1)
-            cv2.circle(image, neck, 5, (0, 165, 255), -1)
-            cv2.circle(image, nose, 5, (165, 42, 42), -1)
+            cv2.line(image, nose, left_shoulder, (0, 255, 255), 3)
+            cv2.line(image, left_shoulder, left_hip, (0, 255, 255), 3)
+            cv2.circle(image, nose, 5, (255, 165, 0), -1)
+            cv2.circle(image, left_shoulder, 5, (0, 165, 255), -1)
+            cv2.circle(image, left_hip, 5, (165, 42, 42), -1)
 
     # Rotate the frame 90 degrees clockwise
     image_rotated = cv2.rotate(image, cv2.ROTATE_90_CLOCKWISE)
