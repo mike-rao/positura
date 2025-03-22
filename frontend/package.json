@@ -1,22 +1,44 @@
 {
-    "name": "posture-app-frontend",
-    "version": "0.1.0",
-    "private": true,
-    "scripts": {
-      "dev": "next dev",
-      "build": "next build",
-      "start": "next start",
-      "lint": "next lint"
+  "name": "posture-app-frontend",
+  "version": "0.1.0",
+  "main": "main.js",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "electron": "electron .",
+    "dev:electron": "npm run build && electron .",
+    "package": "electron-builder"
+  },
+  "dependencies": {
+    "next": "14.1.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "axios": "^1.6.7"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.1",
+    "postcss": "^8.4.35",
+    "autoprefixer": "^10.4.17",
+    "electron": "^30.0.1",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "com.postureapp",
+    "productName": "Posture Tracker",
+    "files": [
+      "main.js",
+      ".next/**/*",
+      "public/**/*"
+    ],
+    "win": {
+      "target": "nsis"
     },
-    "dependencies": {
-      "next": "14.1.0",
-      "react": "18.2.0",
-      "react-dom": "18.2.0",
-      "axios": "^1.6.7"
+    "mac": {
+      "target": "dmg"
     },
-    "devDependencies": {
-      "tailwindcss": "^3.4.1",
-      "postcss": "^8.4.35",
-      "autoprefixer": "^10.4.17"
+    "linux": {
+      "target": "AppImage"
     }
   }
+}
