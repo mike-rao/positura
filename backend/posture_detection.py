@@ -29,9 +29,8 @@ def calculate_angle(p1, p2, p3):
     return angle
 
 # Input and output video paths
-name = 'haoze'
-input_video_path = '/videos/test_' + name +'.MOV'  
-output_video_path = '/videos/output_vids/test_' + name +'.MOV' 
+input_video_path = 'test_long.MOV'  
+output_video_path = 'output_video.MOV'
 
 # Open video
 cap = cv2.VideoCapture(input_video_path)
@@ -50,7 +49,7 @@ fourcc = cv2.VideoWriter_fourcc(*'mp4v')
 out = cv2.VideoWriter(output_video_path, fourcc, fps, (new_height, new_width))  
 
 # Setup CSV
-filename = 'backend/training_data/' + name + '.csv'
+filename = 'data.csv'
 if os.path.exists(filename):
     os.remove(filename)
 
@@ -96,24 +95,18 @@ while cap.isOpened():
             hip_angle = calculate_angle(left_shoulder, left_hip, left_knee)
             neck_angle = calculate_angle(nose, left_shoulder, left_hip)
 
-            # Determine hip posture
+            # Determine  posture
             if hip_angle is not None:
-                if 85 < hip_angle < 100:
-                    posture_status = "Good"
-                elif hip_angle <= 80:
+                if 85 < hip_angle < 110 and 120 < neck_angle < 150:
+                    # Hip angle is good, now check the neck
+                        posture_status = "Good"
+                elif hip_angle <= 85:
                     posture_status = "Slouch"
-                else:
+                elif hip_angle >= 100:
                     posture_status = "Lean Back"
-
-            # Determine neck posture
-            if neck_angle is not None:
-                if 85 < neck_angle < 105:
-                    neck_status = "Good"
-                elif neck_angle < 85:
-                    neck_status = "Forward Head"
                 else:
-                    neck_status = "Tilted Back"
-
+                    posture_status = "Bad Posture"
+                    
             # Write to CSV
             data = [posture_status, neck_status]
             for i in range(len(landmarks)):
