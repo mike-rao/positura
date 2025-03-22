@@ -56,7 +56,7 @@ credentials.json
 # Large media files (e.g., test videos or datasets)
 *.mp4
 *.avi
-*.mov
+#*.mov
 *.jpg
 *.jpeg
 *.png
