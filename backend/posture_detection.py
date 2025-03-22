@@ -29,8 +29,9 @@ def calculate_angle(p1, p2, p3):
     return angle
 
 # Input and output video paths
-input_video_path = 'test_long.MOV'  
-output_video_path = 'output_video.MOV'
+name = 'haoze'
+input_video_path = '/videos/test_' + name +'.MOV'  
+output_video_path = '/videos/output_vids/test_' + name +'.MOV' 
 
 # Open video
 cap = cv2.VideoCapture(input_video_path)
@@ -49,7 +50,7 @@ fourcc = cv2.VideoWriter_fourcc(*'mp4v')
 out = cv2.VideoWriter(output_video_path, fourcc, fps, (new_height, new_width))  
 
 # Setup CSV
-filename = 'data.csv'
+filename = 'backend/training_data/' + name + '.csv'
 if os.path.exists(filename):
     os.remove(filename)
 
