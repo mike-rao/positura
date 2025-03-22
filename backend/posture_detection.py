@@ -3,7 +3,6 @@ import mediapipe as mp
 import numpy as np
 import csv
 
-filename = 'data.csv'
 # Initialize MediaPipe Pose
 mp_pose = mp.solutions.pose
 mp_drawing = mp.solutions.drawing_utils
@@ -41,6 +40,14 @@ new_height = 400
 fourcc = cv2.VideoWriter_fourcc(*'mp4v')
 out = cv2.VideoWriter(output_video_path, fourcc, fps, (new_height, new_width))  # Swapped width & height for rotation
 
+#set up csv headers
+filename = 'data.csv'
+header = []
+
+with open(filename, 'a', newline='') as file:
+    writer = csv.writer(file)
+    writer.writerow('data')
+
 # Process the video
 while cap.isOpened():
     ret, frame = cap.read()
@@ -62,14 +69,15 @@ while cap.isOpened():
     #write to csv
     data = []
     for i in range(len(landmarks)):
-        data.append(str(landmarks[i].x) + ', ' + str(landmarks[i].y) + ", ")
+        data.append(landmarks[i].x)
+        data.append(landmarks[i].y)
     #make csv
     with open(filename, 'a', newline='') as file:
         # Create a CSV writer object
         writer = csv.writer(file)
 
         # Write the data rows to the CSV file
-        writer.writerows(data)
+        writer.writerow(data)
 
     if results.pose_landmarks:
         landmarks = results.pose_landmarks.landmark
