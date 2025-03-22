@@ -66,19 +66,7 @@ while cap.isOpened():
 
     angle = None  # Default to None in case no detection happens
 
-    #write to csv
-    data = []
-    for i in range(len(landmarks)):
-        data.append(landmarks[i].x)
-        data.append(landmarks[i].y)
-    #make csv
-    with open(filename, 'a', newline='') as file:
-        # Create a CSV writer object
-        writer = csv.writer(file)
-
-        # Write the data rows to the CSV file
-        writer.writerow(data)
-
+   
     if results.pose_landmarks:
         landmarks = results.pose_landmarks.landmark
 
@@ -97,6 +85,19 @@ while cap.isOpened():
             posture_status = "Slouch"
         else:
             posture_status = "Lean Back"
+
+         #write to csv
+        data = []
+        for i in range(len(landmarks)):
+            data.append(landmarks[i].x)
+            data.append(landmarks[i].y)
+        #make csv
+        with open(filename, 'a', newline='') as file:
+            # Create a CSV writer object
+            writer = csv.writer(file)
+
+            # Write the data rows to the CSV file
+            writer.writerow(data)
 
         # Draw pose landmarks
         mp_drawing.draw_landmarks(
