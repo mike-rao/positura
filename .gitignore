@@ -1,0 +1,63 @@
+# Node.js / Next.js (frontend)
+node_modules/
+.next/
+out/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# Python / FastAPI (backend)
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+*.egg-info/
+dist/
+build/
+*.log
+
+# Dependency-specific ignores
+# PyTorch model files or caches
+*.pt
+*.pth
+torch_cache/
+
+# Virtual environment
+venv/
+env/
+.env
+
+# MongoDB local data (if running locally)
+data/
+mongod.lock
+
+# IDE-specific files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+
+# Build artifacts
+*.zip
+*.tar.gz
+
+# Sensitive files
+*.env  # For environment variables like API keys
+secrets.json
+credentials.json
+
+# Large media files (e.g., test videos or datasets)
+*.mp4
+*.avi
+*.mov
+*.jpg
+*.jpeg
+*.png
+datasets/
