@@ -2,6 +2,7 @@ import cv2
 import mediapipe as mp
 import numpy as np
 import csv
+import os
 
 # Initialize MediaPipe Pose
 mp_pose = mp.solutions.pose
@@ -20,7 +21,7 @@ def calculate_angle(p1, p2, p3):
     return angle
 
 # Input and output video paths
-input_video_path = 'test_mike2.MOV'  # Replace with your video file
+input_video_path = 'backend/test.MOV'  # Replace with your video file
 output_video_path = 'output_video.MOV'
 
 # Open the input video
@@ -43,10 +44,12 @@ out = cv2.VideoWriter(output_video_path, fourcc, fps, (new_height, new_width))  
 #set up csv headers
 filename = 'data.csv'
 header = []
-
-with open(filename, 'a', newline='') as file:
-    writer = csv.writer(file)
-    writer.writerow('data')
+file_path = "data.csv"
+if os.path.exists(file_path):
+    os.remove(file_path)
+    #print(f"File '{file_path}' has been removed.")
+else:
+    print(f"File '{file_path}' does not exist.")
 
 # Process the video
 while cap.isOpened():
@@ -88,6 +91,7 @@ while cap.isOpened():
 
          #write to csv
         data = []
+        data.append(posture_status)
         for i in range(len(landmarks)):
             data.append(landmarks[i].x)
             data.append(landmarks[i].y)
