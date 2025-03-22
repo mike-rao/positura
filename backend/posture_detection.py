@@ -1,3 +1,4 @@
+#best with neck
 import cv2
 import mediapipe as mp
 import numpy as np
@@ -95,24 +96,18 @@ while cap.isOpened():
             hip_angle = calculate_angle(left_shoulder, left_hip, left_knee)
             neck_angle = calculate_angle(nose, left_shoulder, left_hip)
 
-            # Determine hip posture
+            # Determine  posture
             if hip_angle is not None:
-                if 85 < hip_angle < 100:
-                    posture_status = "Good"
-                elif hip_angle <= 80:
+                if 85 < hip_angle < 110 and 120 < neck_angle < 150:
+                    # Hip angle is good, now check the neck
+                        posture_status = "Good"
+                elif hip_angle <= 85:
                     posture_status = "Slouch"
-                else:
+                elif hip_angle >= 100:
                     posture_status = "Lean Back"
-
-            # Determine neck posture
-            if neck_angle is not None:
-                if 85 < neck_angle < 105:
-                    neck_status = "Good"
-                elif neck_angle < 85:
-                    neck_status = "Forward Head"
                 else:
-                    neck_status = "Tilted Back"
-
+                    posture_status = "Bad Posture"
+                    
             # Write to CSV
             data = [posture_status, neck_status]
             for i in range(len(landmarks)):
@@ -154,12 +149,12 @@ while cap.isOpened():
 
     # Add text AFTER rotation to keep it upright
     if hip_angle is not None:
-        cv2.putText(image_rotated, f"Hip Angle: {hip_angle:.1f}", (10, 50),
+        cv2.putText(image_rotated, f"Hip Angle: {hip_angle:.1f}", (10, 90),
                     cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2)
     if neck_angle is not None:
-        cv2.putText(image_rotated, f"Neck Angle: {neck_angle:.1f}", (10, 90),
+        cv2.putText(image_rotated, f"Neck Angle: {neck_angle:.1f}", (10, 130),
                     cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 0), 2)
-    cv2.putText(image_rotated, f"Posture: {posture_status}", (10, 130),
+    cv2.putText(image_rotated, f"Posture: {posture_status}", (10, 50),
                 cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0) if posture_status == "Good" else (0, 0, 255), 2)
 
     # Write frame to output video
