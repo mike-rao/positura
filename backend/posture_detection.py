@@ -29,8 +29,9 @@ def calculate_angle(p1, p2, p3):
     return angle
 
 # Input and output video paths
-input_video_path = 'test.MOV'  
-output_video_path = 'output_video.MOV'
+path = 'haoze'
+input_video_path = 'videos/test_' + path + '.MOV'  
+output_video_path = 'videos/ouput_vids/' +path+ '.MOV'
 
 # Open video
 cap = cv2.VideoCapture(input_video_path)
@@ -48,8 +49,17 @@ new_width, new_height = 720, 400
 fourcc = cv2.VideoWriter_fourcc(*'mp4v')
 out = cv2.VideoWriter(output_video_path, fourcc, fps, (new_height, new_width))  
 
+#set up csv headers
+filename = 'backend/training_data/' + path + '.csv'
+header = []
+file_path = 'backend/training_data/' + path + '.csv'
+if os.path.exists(file_path):
+    os.remove(file_path)
+    #print(f"File '{file_path}' has been removed.")
+else:
+    print(f"File '{file_path}' does not exist.")
+
 # Setup CSV
-filename = 'data.csv'
 if os.path.exists(filename):
     os.remove(filename)
 
@@ -114,7 +124,9 @@ while cap.isOpened():
                     neck_status = "Tilted Back"
 
             # Write to CSV
-            data = [posture_status, neck_status]
+            data = []
+            data.append(posture_status)
+            data.append(neck_status)
             for i in range(len(landmarks)):
                 data.append(landmarks[i].x)
                 data.append(landmarks[i].y)
