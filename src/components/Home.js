@@ -38,7 +38,7 @@ function Home() {
           className="nav-btn" 
           src="/assets/start1.png" 
           alt="Study" 
-          onClick={() => navigate('/study')} 
+          onClick={() => navigate('/live-feed')} 
         />
       </div>
     </div>

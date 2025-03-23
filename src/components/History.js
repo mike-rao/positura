@@ -23,6 +23,12 @@ function History() {
 
   return (
     <div>
+      {/* Window Controls */}
+      <div className="window-controls">
+        <img id="minimize-btn" src="/assets/minimize.png" alt="Minimize" />
+        <img id="close-btn" src="/assets/exit.png" alt="Close" />
+      </div>
+      
       <h2>Session History</h2>
       <ul>
         {history.map((session) => (
