@@ -31,7 +31,7 @@ function History() {
   }, []);
 
   const handleSessionClick = (session) => {
-    navigate('/summary', { state: { session } });
+    navigate('/history-summary', { state: { session } });
   };
 
   const handleMinimize = () => {

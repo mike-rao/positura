@@ -5,6 +5,7 @@ import LiveFeed from './components/LiveFeed';
 import Pomodoro from './components/Pomodoro';
 import Summary from './components/Summary';
 import History from './components/History';
+import HistorySummary from './components/HistorySummary';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/pomodoro" element={<Pomodoro />} />
         <Route path="/summary" element={<Summary />} />
         <Route path="/history" element={<History />} />
+        <Route path="/history-summary" element={<HistorySummary />} />
       </Routes>
     </div>
   );

@@ -7,58 +7,56 @@ import '../styles/Summary.css';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-function Summary() {
+function HistorySummary() {
   const [summary, setSummary] = useState(null);
   const navigate = useNavigate();
   const location = useLocation(); // Get state from navigation
-  const totalTime = location.state?.totalTime || 0; // Fallback to 0 if not provided
-  const session = location.state?.session;
+  const session = location.state?.session; // Retrieve the session data
+
+  const totalTime = session ? session.total_duration : 0; // Get total time from session data
 
   useEffect(() => {
     console.log('Summary component mounted');
-    if (window.electronAPI) {
-      // Request the summary data from backend.py
-      window.electronAPI.getSummary();
-
-      const messageHandler = (event, message) => {
-        console.log('Received python-message:', message);
-        if (message.summary) {
-          setSummary(message.summary);
-        }
+    if (window.electronAPI && session) {
+      // If session data is available, construct the chart data directly
+      const chartData = {
+        labels: ['Good', 'Slouch', 'Lean Back', 'Bad Posture'],
+        datasets: [
+          {
+            data: [session.Good || 0, session.Slouch || 0, session['Lean Back'] || 0, session['Bad Posture'] || 0],
+            backgroundColor: ['#4BC0C0', '#FFCE56', '#FF6384', '#36A2EB'],
+            hoverBackgroundColor: ['#4BC0C0', '#FFCE56', '#FF6384', '#36A2EB'],
+          },
+        ],
       };
 
-      window.electronAPI.onPythonMessage(messageHandler);
-
-      // Clean up the listener when the component unmounts
-      return () => {
-        window.electronAPI.removeAllListeners('python-message');
-      };
+      setSummary({ postures: chartData }); // Set the constructed chart data
     } else {
-      console.error('electronAPI not available');
+      console.error('electronAPI not available or no session data');
     }
-  }, []);
+
+    return () => {
+      if (window.electronAPI) {
+        window.electronAPI.removeAllListeners('python-message');
+      }
+    };
+  }, [session]);  // Depend on the session data
+
 
   const data = summary
     ? {
-        labels: Object.keys(summary.postures),
-        datasets: [
-          {
-            data: Object.values(summary.postures),
-            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'],
-            hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'],
-          },
-        ],
-      }
+      labels: summary.postures.labels,
+      datasets: summary.postures.datasets
+    }
     : {
-        labels: [],
-        datasets: [
-          {
-            data: [],
-            backgroundColor: [],
-            hoverBackgroundColor: [],
-          },
-        ],
-      };
+      labels: [],
+      datasets: [{
+        data: [],
+        backgroundColor: [],
+        hoverBackgroundColor: [],
+      }]
+    };
+
 
   const options = {
     responsive: true,
@@ -87,6 +85,7 @@ function Summary() {
     },
   };
 
+
   const handleMinimize = () => {
     console.log('Minimize clicked');
     if (window.electronAPI && window.electronAPI.minimizeWindow) {
@@ -106,15 +105,11 @@ function Summary() {
     navigate('/history');
   }
 
-  const handleFinish = () => {
-    navigate('/');
-  }
-
   return (
     <div className="summary">
       {/* Window Controls */}
       <div className="window-controls">
-        <img id="minimize-btn" src="/assets/minimize.png" alt="Minimize" onClick={handleMinimize}/>
+        <img id="minimize-btn" src="/assets/minimize.png" alt="Minimize" onClick={handleMinimize} />
         <img id="close-btn" src="/assets/exit.png" alt="Close" onClick={handleClose} />
       </div>
 
@@ -122,7 +117,7 @@ function Summary() {
       <p className="pixelify-sans total-time">Total Time: {Math.floor(totalTime / 60)}m {Math.round(totalTime % 60)}s</p>
 
       <div className="chart-container">
-        {summary ? (
+        {summary && summary.postures.datasets[0].data.length > 0 ? (
           <Pie data={data} options={options} />
         ) : (
           <p className="pixelify-sans loading-p-s">Loading posture summary...</p>
@@ -130,13 +125,13 @@ function Summary() {
       </div>
 
       <img 
-          src="/assets/finish.png" 
-          alt="finish" 
-          className="finish-button pixelify-sans" 
-          onClick={handleFinish} 
-        />
+        src="/assets/back.png" 
+        alt="back" 
+        className="back-button pixelify-sans" 
+        onClick={handleBack} 
+      />
     </div>
   );
 }
 
-export default Summary;
+export default HistorySummary;
