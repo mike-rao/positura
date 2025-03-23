@@ -18,19 +18,18 @@ function createWindow() {
     },
   });
 
-  // Always load the dev server in development mode
-  const isDev = process.env.NODE_ENV !== 'production'; // Simplified check
+  const isDev = process.env.NODE_ENV !== 'production';
   const url = isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '../build/index.html')}`;
 
   mainWindow.loadURL(url).catch((err) => {
     console.error('Failed to load URL:', err);
   });
 
-  mainWindow.webContents.openDevTools(); // Open DevTools for debugging
+  mainWindow.webContents.openDevTools();
 
   pythonProcess = spawn('python', [path.join(__dirname, '../backend/backend.py')]);
   pythonProcess.stdout.on('data', (data) => {
-    console.log('Python says:', data.toString());
+    console.log('Python stdout:', data.toString());
     try {
       const message = JSON.parse(data.toString());
       mainWindow.webContents.send('python-message', message);
@@ -38,7 +37,9 @@ function createWindow() {
       console.error('Failed to parse Python message:', e);
     }
   });
-  pythonProcess.stderr.on('data', (data) => console.error(data.toString()));
+  pythonProcess.stderr.on('data', (data) => {
+    console.error('Python stderr:', data.toString());
+  });
 
   mainWindow.on('closed', () => (mainWindow = null));
 }
@@ -55,13 +56,36 @@ app.on('activate', () => {
 });
 
 ipcMain.on('start-session', () => {
-  pythonProcess.stdin.write(JSON.stringify({ command: 'start' }) + '\n');
+  if (pythonProcess) {
+    console.log('Sending start command to Python');
+    pythonProcess.stdin.write(JSON.stringify({ command: 'start' }) + '\n');
+  }
 });
 
 ipcMain.on('stop-session', () => {
-  pythonProcess.stdin.write(JSON.stringify({ command: 'stop' }) + '\n');
+  if (pythonProcess) {
+    console.log('Sending stop command to Python');
+    pythonProcess.stdin.write(JSON.stringify({ command: 'stop' }) + '\n');
+  }
 });
 
-ipcMain.on('get-history', () => {
-  pythonProcess.stdin.write(JSON.stringify({ command: 'history' }) + '\n');
+ipcMain.on('get-history', (event) => {
+  console.log('Received get-history request');
+  if (pythonProcess) {
+    console.log('Sending history command to Python');
+    pythonProcess.stdin.write(JSON.stringify({ command: 'history' }) + '\n');
+  } else {
+    console.log('Python process not available');
+  }
+});
+
+ipcMain.on('window-control', (event, action) => {
+  console.log('Received window control action:', action);
+  if (mainWindow) {
+    if (action === 'minimize') {
+      mainWindow.minimize();
+    } else if (action === 'close') {
+      mainWindow.close();
+    }
+  }
 });

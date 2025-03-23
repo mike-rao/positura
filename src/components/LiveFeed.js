@@ -1,36 +1,35 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getIpcRenderer } from '../utils/ipc';
-import '../styles/LiveFeed.css'; // Adjust path if needed
+import '../styles/LiveFeed.css';
 
 function LiveFeed() {
   const [posture, setPosture] = useState('N/A');
   const [timer, setTimer] = useState(0);
-  const [isRunning, setIsRunning] = useState(true); // Start as running by default
+  const [isRunning, setIsRunning] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
-    let interval;
-    
-    getIpcRenderer()
-      .then((ipcRenderer) => {
-        ipcRenderer.send('start-session');
-
-        // Listen for posture updates from Python
-        ipcRenderer.on('python-message', (event, message) => {
-          if (message.posture) setPosture(message.posture);
-        });
-      })
-      .catch((err) => console.error('Failed to get ipcRenderer:', err));
-
-    return () => {
-      getIpcRenderer()
-        .then((ipcRenderer) => {
-          ipcRenderer.removeAllListeners('python-message');
-        })
-        .catch((err) => console.error('Cleanup failed:', err));
-    };
-  }, []); // Runs only on mount/unmount
+    console.log('LiveFeed mounted');
+    if (window.electronAPI) {
+      console.log('Sending start-session');
+      window.electronAPI.startSession();
+  
+      const messageHandler = (event, message) => {
+        console.log('Received python-message:', message);
+        if (message.posture) setPosture(message.posture);
+      };
+  
+      window.electronAPI.onPythonMessage(messageHandler);
+  
+      return () => {
+        console.log('LiveFeed unmounting');
+        window.electronAPI.removeAllListeners('python-message');
+      };
+    } else {
+      console.error('electronAPI not available');
+    }
+  }, []);  
 
   useEffect(() => {
     let interval;
@@ -40,7 +39,7 @@ function LiveFeed() {
       }, 1000);
     }
     return () => clearInterval(interval);
-  }, [isRunning]); // Runs every time `isRunning` changes
+  }, [isRunning]);
 
   const togglePause = () => {
     setIsRunning((prev) => !prev);
@@ -48,25 +47,40 @@ function LiveFeed() {
 
   const stopSession = () => {
     setIsRunning(false);
-    getIpcRenderer()
-      .then((ipcRenderer) => {
-        ipcRenderer.send('stop-session');
-        navigate('/summary', { state: { totalTime: timer } });
-      })
-      .catch((err) => console.error('Failed to stop session:', err));
-      navigate('/summary', { state: { totalTime: timer } }); // fallback
+    if (window.electronAPI) {
+      console.log('Sending stop-session');
+      window.electronAPI.stopSession();
+      navigate('/summary', { state: { totalTime: timer } });
+    } else {
+      console.error('electronAPI not available');
+      navigate('/summary', { state: { totalTime: timer } });
+    }
+  };  
+
+  const handleMinimize = () => {
+    console.log('Minimize clicked');
+    if (window.electronAPI && window.electronAPI.minimizeWindow) {
+      window.electronAPI.minimizeWindow();
+    } else {
+      console.error('electronAPI or minimizeWindow not available');
+    }
+  };
+
+  const handleClose = () => {
+    if (window.electronAPI) {
+      window.electronAPI.closeWindow();
+    }
   };
 
   return (
     <div className="live-feed">
       {/* Window Controls */}
       <div className="window-controls">
-        <img id="minimize-btn" src="/assets/minimize.png" alt="Minimize" />
-        <img id="close-btn" src="/assets/exit.png" alt="Close" />
+        <img id="minimize-btn" src="/assets/minimize.png" alt="Minimize" onClick={handleMinimize}/>
+        <img id="close-btn" src="/assets/exit.png" alt="Close" onClick={handleClose} />
       </div>
-
       <h2 className="pixelify-sans">Live Feed</h2>
-      <video autoPlay muted style={{ width: '50%' }} /> {/* Placeholder */}
+      <video autoPlay muted style={{ width: '50%' }} />
       <p className="pixelify-sans">Timer: {Math.floor(timer / 60)}m {timer % 60}s</p>
       <p className="pixelify-sans">Posture: {posture}</p>
       <img 
