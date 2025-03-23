@@ -20,12 +20,19 @@ function Pomodoro() {
     }
   };
 
+  const handleHome = () => {
+    navigate('/');
+  }
+
   return (
     <div className="live-feed">
       {/* Window Controls */}
       <div className="window-controls">
-        <img id="minimize-btn" src="/assets/minimize.png" alt="Minimize" onClick={handleMinimize}/>
-        <img id="close-btn" src="/assets/exit.png" alt="Close" onClick={handleClose} />
+        <img id="home-btn" src="/assets/home.png" alt="Home" onClick={handleHome} />
+        <div className="right-controls"> {/* Container for right-aligned buttons */}
+          <img id="minimize-btn" src="/assets/minimize.png" alt="Minimize" onClick={handleMinimize} />
+          <img id="close-btn" src="/assets/exit.png" alt="Close" onClick={handleClose} />
+        </div>
       </div>
       {/* <h2 className="pixelify-sans">Live Feed</h2> */}
       <div className="text-container">

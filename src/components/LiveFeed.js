@@ -104,9 +104,9 @@ function LiveFeed() {
   return (
     <div className="live-feed">
       {/* Window Controls */}
-      <div className="window-controls">
-        <img id="minimize-btn" src="/assets/minimize.png" alt="Minimize" onClick={handleMinimize} />
-        <img id="close-btn" src="/assets/exit.png" alt="Close" onClick={handleClose} />
+      <div className="lf-window-controls">
+        <img id="lf-minimize-btn" src="/assets/minimize.png" alt="Minimize" onClick={handleMinimize} />
+        <img id="lf-close-btn" src="/assets/exit.png" alt="Close" onClick={handleClose} />
       </div>
 
       {/* Live Feed Box */}
