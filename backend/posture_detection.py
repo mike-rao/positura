@@ -6,7 +6,7 @@ import csv
 import os
 
 # !!!!!!!CHANGE AS NEEDED!!!!!!!
-camera = False
+camera = True
 
 #only needed if using video file
 name = 'haoze' 

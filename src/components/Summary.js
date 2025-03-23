@@ -73,7 +73,13 @@ function Summary() {
       ) : (
         <p className="pixelify-sans" >Loading posture summary...</p>
       )}
-      <button  className="pixelify-sans" onClick={() => navigate('/')}>Back to Home</button>
+<img 
+  src="/assets/finish.png" 
+  alt="Back to Home" 
+  className="finish-button pixelify-sans" 
+  onClick={() => navigate('/')} 
+/>
+
     </div>
   );
 }

@@ -1,0 +1,16 @@
+.move-paragraph {
+    margin-top: 240px; /* Reduced space between the top of the screen and the paragraph */
+    margin-bottom: -240px; /* Space between the paragraph and button */
+    text-align: center; /* Center the text if needed */
+    width: 100%; /* Optional, adjust width if required */
+    max-width: 450px; /* Optional: set a maximum width to prevent it from stretching too wide */
+    text-align: center; /* Optionally center the text */
+    margin-left: auto; /* Center the paragraph horizontally */
+    margin-right: auto; /* Center the paragraph horizontally */
+  }
+  
+  .study-button-container {
+    display: flex;
+    justify-content: center; /* Center the button horizontally */
+    margin-top: 20px; /* Space between paragraph and button */
+  }

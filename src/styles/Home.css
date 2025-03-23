@@ -22,6 +22,19 @@ body {
     justify-content: center;
 }
 
+body2 {
+    width: 512px;
+    height: 512px;
+    margin: 0;
+    overflow: hidden; /* Hide scrollbars */
+    background: url('../../public/assets/background512.png') no-repeat center center;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
 .button-container {
     display: flex;
     justify-content: center;

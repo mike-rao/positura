@@ -29,7 +29,7 @@ function History() {
       console.error('electronAPI not available');
     }
   }, []);
-  
+
   const handleMinimize = () => {
     console.log('Minimize clicked');
     if (window.electronAPI && window.electronAPI.minimizeWindow) {
@@ -49,23 +49,30 @@ function History() {
     <div className="history">
       {/* Window Controls */}
       <div className="window-controls">
-        <img id="minimize-btn" src="/assets/minimize.png" alt="Minimize" onClick={handleMinimize}/>
+        <img id="minimize-btn" src="/assets/minimize.png" alt="Minimize" onClick={handleMinimize} />
         <img id="close-btn" src="/assets/exit.png" alt="Close" onClick={handleClose} />
       </div>
       <h2 className="pixelify-sans">Session History</h2>
       {history.length === 0 ? (
         <p className="pixelify-sans">No sessions recorded yet.</p>
       ) : (
-        <ul>
-          {history.map((session) => (
-            <li key={session.id} className="pixelify-sans">
-              {new Date(session.start_time).toLocaleString()} -{' '}
-              {Math.floor(session.total_duration / 60)}m {Math.round(session.total_duration % 60)}s
-            </li>
-          ))}
-        </ul>
+        <div className="history-list">
+          <ul>
+            {history.map((session) => (
+              <li key={session.id} className="pixelify-sans">
+                {new Date(session.start_time).toLocaleString()} -{' '}
+                {Math.floor(session.total_duration / 60)}m {Math.round(session.total_duration % 60)}s
+              </li>
+            ))}
+          </ul>
+        </div>
       )}
-      <button className="pixelify-sans" onClick={() => navigate('/')}>Back to Home</button>
+      <img
+        src="/assets/finish.png"
+        alt="Back to Home"
+        className="finish-button pixelify-sans"
+        onClick={() => navigate('/')}
+      />
     </div>
   );
 }
