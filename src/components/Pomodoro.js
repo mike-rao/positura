@@ -34,14 +34,29 @@ function Pomodoro() {
     navigate('/summary'); // Move outside Promise to ensure it runs
   };
 
+  const handleMinimize = () => {
+    console.log('Minimize clicked');
+    if (window.electronAPI && window.electronAPI.minimizeWindow) {
+      window.electronAPI.minimizeWindow();
+    } else {
+      console.error('electronAPI or minimizeWindow not available');
+    }
+  };
+
+  const handleClose = () => {
+    if (window.electronAPI) {
+      window.electronAPI.closeWindow();
+    }
+  };
+
   return (
     <div>
       {/* Window Controls */}
       <div className="window-controls">
-        <img id="minimize-btn" src="/assets/minimize.png" alt="Minimize" />
-        <img id="close-btn" src="/assets/exit.png" alt="Close" />
+        <img id="minimize-btn" src="/assets/minimize.png" alt="Minimize" onClick={handleMinimize}/>
+        <img id="close-btn" src="/assets/exit.png" alt="Close" onClick={handleClose} />
       </div>
-      
+
       <h2>Pomodoro</h2>
       <video autoPlay muted style={{ width: '50%' }} /> {/* Placeholder */}
       <p>Timer: {timer}s</p>

@@ -41,24 +41,39 @@ function Summary() {
       }
     : {};
 
+    const handleMinimize = () => {
+      console.log('Minimize clicked');
+      if (window.electronAPI && window.electronAPI.minimizeWindow) {
+        window.electronAPI.minimizeWindow();
+      } else {
+        console.error('electronAPI or minimizeWindow not available');
+      }
+    };
+  
+    const handleClose = () => {
+      if (window.electronAPI) {
+        window.electronAPI.closeWindow();
+      }
+    };
+
   return (
     <div className="summary">
       {/* Window Controls */}
       <div className="window-controls">
-        <img id="minimize-btn" src="/assets/minimize.png" alt="Minimize" />
-        <img id="close-btn" src="/assets/exit.png" alt="Close" />
+        <img id="minimize-btn" src="/assets/minimize.png" alt="Minimize" onClick={handleMinimize}/>
+        <img id="close-btn" src="/assets/exit.png" alt="Close" onClick={handleClose} />
       </div>
 
-      <h2>Session Summary</h2>
-      <p>Total Time: {Math.floor(totalTime / 60)}m {totalTime % 60}s</p>
+      <h2 className="pixelify-sans" >Session Summary</h2>
+      <p className="pixelify-sans" >Total Time: {Math.floor(totalTime / 60)}m {totalTime % 60}s</p>
       {summary ? (
         <>
           <Pie data={data} />
         </>
       ) : (
-        <p>Loading posture summary...</p>
+        <p className="pixelify-sans" >Loading posture summary...</p>
       )}
-      <button onClick={() => navigate('/')}>Back to Home</button>
+      <button  className="pixelify-sans" onClick={() => navigate('/')}>Back to Home</button>
     </div>
   );
 }
