@@ -58,9 +58,3 @@ joblib.dump(scaler, "backend/models/scaler.pkl")
 joblib.dump(label_encoder, "backend/models/label_encoder.pkl")
 
 print("Models saved successfully!")
-
-# def predict_single_frame(frame):
-#     frame = np.array(frame).reshape(1, -1)  # Ensure it's in the correct shape
-#     frame_scaled = scaler.transform(frame)  # Apply the same scaling
-#     prediction = clf.predict(frame_scaled)  # Predict posture state
-#     return label_encoder.inverse_transform(prediction)[0]
