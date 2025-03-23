@@ -1,20 +1,26 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Pie } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { getIpcRenderer } from '../utils/ipc';
+import '../styles/Summary.css';
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 function Summary() {
   const [summary, setSummary] = useState(null);
   const navigate = useNavigate();
+  const location = useLocation(); // Get state from navigation
+  const totalTime = location.state?.totalTime || 0; // Fallback to 0 if not provided
 
   useEffect(() => {
-    getIpcRenderer().then((ipcRenderer) => {
-      ipcRenderer.on('python-message', (event, message) => {
-        if (message.summary) setSummary(message.summary);
-      });
-    }).catch((err) => console.error('Failed to get ipcRenderer:', err));
+    getIpcRenderer()
+      .then((ipcRenderer) => {
+        ipcRenderer.on('python-message', (event, message) => {
+          console.log('Received python-message:', message);
+          if (message.summary) setSummary(message.summary);
+        });
+      })
+      .catch((err) => console.error('Failed to get ipcRenderer:', err));
 
     return () => {
       getIpcRenderer().then((ipcRenderer) => {
@@ -36,21 +42,21 @@ function Summary() {
     : {};
 
   return (
-    <div>
+    <div className="summary">
       {/* Window Controls */}
       <div className="window-controls">
         <img id="minimize-btn" src="/assets/minimize.png" alt="Minimize" />
         <img id="close-btn" src="/assets/exit.png" alt="Close" />
       </div>
-      
+
       <h2>Session Summary</h2>
+      <p>Total Time: {Math.floor(totalTime / 60)}m {totalTime % 60}s</p>
       {summary ? (
         <>
-          <p>Total Time: {summary.totalTime}s</p>
           <Pie data={data} />
         </>
       ) : (
-        <p>Loading summary...</p>
+        <p>Loading posture summary...</p>
       )}
       <button onClick={() => navigate('/')}>Back to Home</button>
     </div>

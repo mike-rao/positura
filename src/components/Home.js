@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../styles/styles.css'; // Importing the CSS
+import '../styles/Home.css'; // Importing the CSS
 
 function Home() {
   const navigate = useNavigate();
@@ -16,18 +16,18 @@ function Home() {
       {/* Navigation Buttons */}
       <div className="button-container">
         <img 
-          id="history-btn" 
-          className="nav-btn" 
-          src="/assets/history1.png" 
-          alt="History" 
-          onClick={() => navigate('/history')} 
-        />
-        <img 
           id="pomodoro-btn" 
           className="nav-btn" 
           src="/assets/pomo1.png" 
           alt="Pomodoro" 
           onClick={() => navigate('/pomodoro')} 
+        />
+        <img 
+          id="history-btn" 
+          className="nav-btn" 
+          src="/assets/history1.png" 
+          alt="History" 
+          onClick={() => navigate('/history')} 
         />
       </div>
 
