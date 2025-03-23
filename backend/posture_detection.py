@@ -124,11 +124,8 @@ while cap.isOpened():
                 elif hip_angle <= 85:
                     posture_status = "Slouch"
                 elif hip_angle >= 100:
-                elif hip_angle >= 100:
                     posture_status = "Lean Back"
                 else:
-                    posture_status = "Bad Posture"
-                    
                     posture_status = "Bad Posture"
                     
             # Write to CSV
