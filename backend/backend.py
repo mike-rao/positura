@@ -122,7 +122,7 @@ def posture_classification_loop():
     cap.release()
 
 def save_session():
-    global current_session, start_time, posture_log, running
+    global current_session, start_time, posture_log, running, total_duration
     if current_session and start_time:
         end_time = datetime.now()
         total_duration = time.time() - start_time
@@ -216,6 +216,14 @@ def main():
                         history.append(session)
                 print(json.dumps({"history": history}))
                 sys.stdout.flush()
+            elif cmd["command"] == "get-summary":
+                if running:
+                  summary = {
+                    "totalTime": total_duration,
+                    "postures": posture_log
+                  }
+                  print(json.dumps({"summary": summary}))
+                  sys.stdout.flush()
 
         except json.JSONDecodeError as e:
             print(json.dumps({"error": f"JSON decode error: {str(e)}"}))

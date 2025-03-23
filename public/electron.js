@@ -87,3 +87,10 @@ ipcMain.on('window-control', (event, action) => {
     }
   }
 });
+
+ipcMain.on('get-summary', () => {
+  console.log('Received get-summary command');
+  if (mainWindow && mainWindow.webContents) {
+    mainWindow.webContents.send('python-message', { command: 'get-summary' });
+  }
+});

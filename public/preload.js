@@ -6,6 +6,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
   getHistory: () => ipcRenderer.send('get-history'),
   startSession: () => ipcRenderer.send('start-session'),
   stopSession: () => ipcRenderer.send('stop-session'),
+  getSummary: () => ipcRenderer.send('get-summary'),
   onPythonMessage: (callback) => ipcRenderer.on('python-message', callback),
   removeAllListeners: (channel) => ipcRenderer.removeAllListeners(channel)
 });

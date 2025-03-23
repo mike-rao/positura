@@ -9,8 +9,40 @@
     color: #555483;
 }
 
+.pixelify-sans-big {
+    font-family: "Pixelify Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 500; /* Change to 400, 500, 600, 700 based on your need */
+    font-style: normal;
+    font-size: 32px; /* Increase size */
+    color: #555483;
+}
+
+.pixelify-sans-small {
+    font-family: "Pixelify Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 500; /* Change to 400, 500, 600, 700 based on your need */
+    font-style: normal;
+    font-size: 16px; /* Increase size */
+    color: #555483;
+}
+
+.session-summary {
+    margin-top: -30px;
+    margin-bottom: 10px;
+}
+
+.total-time {
+    padding-top: 0px;
+    margin-bottom: 10px;
+}
+
+.loading-p-s {
+    padding-top: 25px;
+}
+
 .summary {
-    margin-top: 200px; /* Adjust the space from the top of the screen */
+    margin-top: 170px; /* Adjust the space from the top of the screen */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -23,4 +55,15 @@
   .summary p,
   .summary button {
     margin-top: 0px; /* Adjust the space between elements */
+  }
+  
+  .chart-container {
+    width: 300px; /* Adjust as needed */
+    height: 125px; /* Adjust as needed */
+    margin-bottom: 30px;
+  }
+  
+  .pie-chart {
+    max-width: 100%; /* Ensure the pie chart does not exceed its container */
+    max-height: 100%;
   }
