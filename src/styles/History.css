@@ -11,11 +11,13 @@
 
 .finish-button {
     cursor: pointer;
-    margin-top: -60px;
+    margin-top: 0px; /* Adjust this value to move the button upwards */
+    padding-bottom: 50px; /* Adjust this value to add space below the button */
     width: 200px; /* Adjust the width of the button */
-    height: 200px; /* Adjust the height of the button */
+    height: 100px; /* Adjust the height of the button */
     transition: transform 0.2s ease-in-out; /* Smooth scaling transition */
-  }
+}
+
   
   .finish-button:hover {
     transform: scale(1.1); /* Slightly grow the button when hovered */
@@ -23,7 +25,7 @@
 
   .history {
     padding-top: 150px; /* Adjust this value to move the content down */
-    padding-right: 35px; /* Adjust this value to move the content to the left */
+    
 }
   
 
@@ -35,7 +37,11 @@
     margin-top: 10px;  /* Adjust spacing between the title and list */
     margin-bottom: 30px; /* Adjust spacing between the list and button */
     padding-left: 0; /* Remove any left padding */
+
+
     margin-left: 0; /* Remove any left margin */
+    display: flex;
+    align-items: center;
   }
   
 
@@ -61,6 +67,12 @@
   }
   
 
+  .history-list ul {
+    list-style-type: none; /* Removes the bullet points */
+    padding-left: 0; /* Ensures there's no padding on the left */
+    margin-left: 0; /* Ensures there's no left margin */
+  }
+  
   /* Style for the list items in the history */
 .history-list li {
     padding: 10px;

@@ -40,7 +40,7 @@ body2 {
     justify-content: center;
     gap: 50px; /* Spacing between buttons */
     width: 100%;
-    margin-bottom: 20px;
+    margin-bottom: 100px;
 }
 
 .study-button-container {
@@ -68,8 +68,9 @@ body2 {
 /* Make the study button bigger */
 #study-btn {
     width: 250px; /* Increase width */
-    height: 250px; /* Increase height */
+    height: 100px; /* Increase height */
     margin-top: 150px; /* Move the button down by 50px */
+    margin-bottom: 80px; /* Add space between the button and the other buttons */
 }
 
 .nav-btn:hover {

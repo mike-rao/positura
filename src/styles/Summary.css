@@ -24,16 +24,3 @@
   .summary button {
     margin-top: 0px; /* Adjust the space between elements */
   }
-
-  .finish-button {
-    cursor: pointer;
-    margin-top: -20px;
-    width: 200px; /* Adjust the width of the button */
-    height: 200px; /* Adjust the height of the button */
-    transition: transform 0.2s ease-in-out; /* Smooth scaling transition */
-  }
-  
-  .finish-button:hover {
-    transform: scale(1.1); /* Slightly grow the button when hovered */
-  }
-  
