@@ -65,10 +65,10 @@ function LiveFeed() {
         <img id="close-btn" src="/assets/exit.png" alt="Close" />
       </div>
 
-      <h2>Live Feed</h2>
+      <h2 className="pixelify-sans">Live Feed</h2>
       <video autoPlay muted style={{ width: '50%' }} /> {/* Placeholder */}
-      <p>Timer: {Math.floor(timer / 60)}m {timer % 60}s</p>
-      <p>Posture: {posture}</p>
+      <p className="pixelify-sans">Timer: {Math.floor(timer / 60)}m {timer % 60}s</p>
+      <p className="pixelify-sans">Posture: {posture}</p>
       <button onClick={togglePause}>
         {isRunning ? 'Pause' : 'Continue'}
       </button>
