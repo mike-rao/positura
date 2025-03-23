@@ -14,7 +14,7 @@ body {
     height: 512px;
     margin: 0;
     overflow: hidden; /* Hide scrollbars */
-    background: url('../../public/assets/backgroundName512.png') no-repeat center center;
+    background: url('../../public/assets/background8.png') no-repeat center center;
     background-size: cover;
     display: flex;
     flex-direction: column;
