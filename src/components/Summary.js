@@ -37,6 +37,12 @@ function Summary() {
 
   return (
     <div>
+      {/* Window Controls */}
+      <div className="window-controls">
+        <img id="minimize-btn" src="/assets/minimize.png" alt="Minimize" />
+        <img id="close-btn" src="/assets/exit.png" alt="Close" />
+      </div>
+      
       <h2>Session Summary</h2>
       {summary ? (
         <>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getIpcRenderer } from '../utils/ipc';
 
-function LiveFeed() {
+function Pomodoro() {
   const [posture, setPosture] = useState('N/A');
   const [timer, setTimer] = useState(0);
   const navigate = useNavigate();
@@ -42,7 +42,7 @@ function LiveFeed() {
         <img id="close-btn" src="/assets/exit.png" alt="Close" />
       </div>
       
-      <h2>Live Feed</h2>
+      <h2>Pomodoro</h2>
       <video autoPlay muted style={{ width: '50%' }} /> {/* Placeholder */}
       <p>Timer: {timer}s</p>
       <p>Posture: {posture}</p>
@@ -52,4 +52,4 @@ function LiveFeed() {
   );
 }
 
-export default LiveFeed;
+export default Pomodoro;
