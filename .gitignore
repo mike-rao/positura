@@ -1,63 +1,28 @@
-# Node.js / Next.js (frontend)
-node_modules/
-.next/
-out/
-npm-debug.log
-yarn-debug.log
-yarn-error.log
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# Python / FastAPI (backend)
-__pycache__/
-*.py[cod]
-*.pyo
-*.pyd
-.Python
-env/
-venv/
-*.egg-info/
-dist/
-build/
-*.log
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
 
-# Dependency-specific ignores
-# PyTorch model files or caches
-*.pt
-*.pth
-torch_cache/
+# testing
+/coverage
 
-# Virtual environment
-venv/
-env/
-.env
+# production
+/build
 
-# MongoDB local data (if running locally)
-data/
-mongod.lock
-
-# IDE-specific files
-.vscode/
-.idea/
-*.sublime-project
-*.sublime-workspace
-
-# OS-generated files
+# misc
 .DS_Store
-Thumbs.db
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 
-# Build artifacts
-*.zip
-*.tar.gz
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
-# Sensitive files
-*.env  # For environment variables like API keys
-secrets.json
-credentials.json
-
-# Large media files (e.g., test videos or datasets)
-*.mp4
-*.avi
-#*.mov
-*.jpg
-*.jpeg
-*.png
-datasets/
+# old next stuff
+.next
+node_modules/
+frontend/public/

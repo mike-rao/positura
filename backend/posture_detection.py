@@ -5,6 +5,10 @@ import numpy as np
 import csv
 import os
 
+# !!!!!!!CHANGE AS NEEDED!!!!!!!
+camera = False
+name = 'mike+angela' #only needed if using video file
+
 # Initialize MediaPipe Pose
 mp_pose = mp.solutions.pose
 mp_drawing = mp.solutions.drawing_utils
@@ -30,17 +34,28 @@ def calculate_angle(p1, p2, p3):
     return angle
 
 # Input and output video paths
-input_video_path = 'test_long.MOV'  
-output_video_path = 'output_video.MOV'
 
-# Open video
-cap = cv2.VideoCapture(input_video_path)
+#COMMENT OUT IF USING LIVE FEED
+input_video_path = f'videos/test_{name}.MOV'  
+
+output_video_path = f'videos/test_vids/test_{name}.MOV'
+
+# Open video PICK ONE
+if not camera:  
+    cap = cv2.VideoCapture(input_video_path)
+else:
+    cap = cv2.VideoCapture(0)
+
+
 if not cap.isOpened():
     print("Error: Could not open video.")
     exit()
 
-# Get video properties
-fps = int(cap.get(cv2.CAP_PROP_FPS))
+# Get video properties CHOOSE ONE
+if not camera:
+    fps = int(cap.get(cv2.CAP_PROP_FPS))
+else:
+    fps = 30
 
 # Set resized dimensions
 new_width, new_height = 720, 400
@@ -50,7 +65,7 @@ fourcc = cv2.VideoWriter_fourcc(*'mp4v')
 out = cv2.VideoWriter(output_video_path, fourcc, fps, (new_height, new_width))  
 
 # Setup CSV
-filename = 'data.csv'
+filename = f'backend/datasets/{name}.csv'
 if os.path.exists(filename):
     os.remove(filename)
 
@@ -97,19 +112,27 @@ while cap.isOpened():
             neck_angle = calculate_angle(nose, left_shoulder, left_hip)
 
             # Determine  posture
+            # Determine  posture
             if hip_angle is not None:
+                if 85 < hip_angle < 110 and 120 < neck_angle < 150:
+                    # Hip angle is good, now check the neck
+                        posture_status = "Good"
+                elif hip_angle <= 85:
                 if 85 < hip_angle < 110 and 120 < neck_angle < 150:
                     # Hip angle is good, now check the neck
                         posture_status = "Good"
                 elif hip_angle <= 85:
                     posture_status = "Slouch"
                 elif hip_angle >= 100:
+                elif hip_angle >= 100:
                     posture_status = "Lean Back"
                 else:
                     posture_status = "Bad Posture"
                     
+                    posture_status = "Bad Posture"
+                    
             # Write to CSV
-            data = [posture_status, neck_status]
+            data = [posture_status, hip_angle, neck_angle]
             for i in range(len(landmarks)):
                 data.append(landmarks[i].x)
                 data.append(landmarks[i].y)
@@ -145,7 +168,8 @@ while cap.isOpened():
             cv2.circle(image, left_hip, 5, (165, 42, 42), -1)
 
     # Rotate the frame 90 degrees clockwise
-    image_rotated = cv2.rotate(image, cv2.ROTATE_90_CLOCKWISE)
+    if fps !=30:
+        image_rotated = cv2.rotate(image, cv2.ROTATE_90_CLOCKWISE)
 
     # Add text AFTER rotation to keep it upright
     if hip_angle is not None:
@@ -157,13 +181,31 @@ while cap.isOpened():
     cv2.putText(image_rotated, f"Posture: {posture_status}", (10, 50),
                 cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0) if posture_status == "Good" else (0, 0, 255), 2)
 
-    # Write frame to output video
-    out.write(image_rotated)
+        # Write frame to output video
+        out.write(image_rotated)
 
-    # Show video
-    cv2.imshow('Posture Tracker', image_rotated)
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
+        # Show video
+        cv2.imshow('Posture Tracker', image_rotated)
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+    else:
+        # Add text AFTER rotation to keep it upright
+        if hip_angle is not None:
+            cv2.putText(image, f"Hip Angle: {hip_angle:.1f}", (10, 90),
+                        cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2)
+        if neck_angle is not None:
+            cv2.putText(image, f"Neck Angle: {neck_angle:.1f}", (10, 130),
+                        cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 0), 2)
+        cv2.putText(image, f"Posture: {posture_status}", (10, 50),
+                    cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0) if posture_status == "Good" else (0, 0, 255), 2)
+
+        # Write frame to output video
+        out.write(image)
+
+        # Show video
+        cv2.imshow('Posture Tracker', image)
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
 
 # Release resources
 cap.release()
