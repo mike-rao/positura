@@ -49,7 +49,7 @@ function Pomodoro() {
       className="nav-btn"
       src="/assets/start1.png"
       alt="Study"
-      onClick={() => navigate('/live-feed')}
+      onClick={() => navigate('/pomodoro-live-feed')}
     />
   </div>
 </div>
