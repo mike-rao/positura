@@ -6,8 +6,8 @@ import csv
 import os
 
 # !!!!!!!CHANGE AS NEEDED!!!!!!!
-camera = True
-name = 'test'
+camera = False
+name = 'haoze2'
 
 # Initialize MediaPipe Pose
 mp_pose = mp.solutions.pose
@@ -65,7 +65,7 @@ fourcc = cv2.VideoWriter_fourcc(*'mp4v')
 out = cv2.VideoWriter(output_video_path, fourcc, fps, (new_height, new_width))  
 
 # Setup CSV
-filename = f'backend/datasets/{name}.csv'
+filename = f'backend/datasets/{name}_algorithm.csv' 
 if os.path.exists(filename):
     os.remove(filename)
 
@@ -125,10 +125,11 @@ while cap.isOpened():
                     
             # Write to CSV
             #data = [posture_status, hip_angle, neck_angle]
-            data = []
+            data = [posture_status, hip_angle, neck_angle]
             for i in range(len(landmarks)):
-                data.append(landmarks[i].x)
-                data.append(landmarks[i].y)
+                if i in [0,11,12,23,25]:
+                    data.append(landmarks[i].x * new_width)
+                    data.append(landmarks[i].y * new_height)
 
             with open(filename, 'a', newline='') as file:
                 writer = csv.writer(file)

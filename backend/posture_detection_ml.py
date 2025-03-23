@@ -39,7 +39,7 @@ def calculate_angle(p1, p2, p3):
 #COMMENT OUT IF USING LIVE FEED
 input_video_path = f'videos/test_{name}.MOV'  
 
-output_video_path = f'videos/test_vids/test_{name}.MOV'
+output_video_path = f'videos/test_vids/ml/test_{name}.MOV'
 
 # Open video PICK ONE
 if not camera:  
@@ -66,7 +66,7 @@ fourcc = cv2.VideoWriter_fourcc(*'mp4v')
 out = cv2.VideoWriter(output_video_path, fourcc, fps, (new_height, new_width))  
 
 # Setup CSV
-filename = f'backend/datasets/{name}.csv'
+filename = f'backend/ml/{name}.csv'
 if os.path.exists(filename):
     os.remove(filename)
 
@@ -95,8 +95,9 @@ while cap.isOpened():
         try:
             coordinates = []
             for i in range(len(landmarks)):
-                coordinates.append(landmarks[i].x)
-                coordinates.append(landmarks[i].y)
+                if i in [0,11,12,23,25]:
+                    coordinates.append(landmarks[i].x * new_width)
+                    coordinates.append(landmarks[i].y * new_height)
             posture_status = predict_single_frame(coordinates)
 
             # Extract keypoints

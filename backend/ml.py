@@ -9,8 +9,8 @@ import csv
 import matplotlib.pyplot as plt
 
 # Load dataset
-name = 'haoze'
-data_path = f'backend/datasets/{name}_algorithm.csv'
+training_name = 'haoze2'
+data_path = f'backend/datasets/{training_name}_algorithm.csv'
 df = pd.read_csv(data_path)
 
 # Extract columns
@@ -52,12 +52,12 @@ y_pred_neck = neck_reg.predict(X_test)
 mse_neck = mean_squared_error(y_test_neck, y_pred_neck)
 print(f'Neck Angle Prediction MSE: {mse_neck:.2f}')
 
-def predict_posture(new_csv_path):
-    new_data = pd.read_csv(new_csv_path)
-    new_data_scaled = scaler.transform(new_data)  # Apply the same scaling
-    predictions = clf.predict(new_data_scaled)  # Predict posture states
-    predicted_labels = label_encoder.inverse_transform(predictions)  # Convert back to original labels
-    return predicted_labels
+# def predict_posture(new_csv_path):
+#     new_data = pd.read_csv(new_csv_path)
+#     new_data_scaled = scaler.transform(new_data)  # Apply the same scaling
+#     predictions = clf.predict(new_data_scaled)  # Predict posture states
+#     predicted_labels = label_encoder.inverse_transform(predictions)  # Convert back to original labels
+#     return predicted_labels
 
 def predict_single_frame(frame):
     frame = np.array(frame).reshape(1, -1)  # Ensure it's in the correct shape
@@ -65,50 +65,50 @@ def predict_single_frame(frame):
     prediction = clf.predict(frame_scaled)  # Predict posture state
     return label_encoder.inverse_transform(prediction)[0]
 
-test_path = f'backend/datasets/{name}.csv'
-predicted_postures = predict_posture(test_path)
-#print(predicted_postures)
-given_postures = []
-with open(data_path, 'r', newline='') as file:
-    reader = csv.reader(file)  # Create a CSV reader object
-    for row in reader:
-        if row:
-            given_postures.append(row[0])
+# test_path = f'backend/datasets/{name}.csv'
+# predicted_postures = predict_posture(test_path)
+# #print(predicted_postures)
+# given_postures = []
+# with open(data_path, 'r', newline='') as file:
+#     reader = csv.reader(file)  # Create a CSV reader object
+#     for row in reader:
+#         if row:
+#             given_postures.append(row[0])
 
-given_graph = []
-given_height = 0
+# given_graph = []
+# given_height = 0
 
-for i in range(len(given_postures)):
-    given_graph.append(given_height)
-    if given_postures[i] == 'Good':
-        given_height += 1
-    else:
-        given_height -= 1
+# for i in range(len(given_postures)):
+#     given_graph.append(given_height)
+#     if given_postures[i] == 'Good':
+#         given_height += 1
+#     else:
+#         given_height -= 1
 
-predicted_graph = []
-predicted_height = 0
+# predicted_graph = []
+# predicted_height = 0
 
-for i in range(len(predicted_postures)):
-    predicted_graph.append(predicted_height)
-    if predicted_postures[i] == 'Good':
-        predicted_height += 1
-    else:
-        predicted_height -= 1
+# for i in range(len(predicted_postures)):
+#     predicted_graph.append(predicted_height)
+#     if predicted_postures[i] == 'Good':
+#         predicted_height += 1
+#     else:
+#         predicted_height -= 1
 
-indices = range(len(given_postures))
-indicies2 = range(len(predicted_postures))
+# indices = range(len(given_postures))
+# indicies2 = range(len(predicted_postures))
 
-# Plot both arrays
-plt.plot(indices, given_postures, marker='o', label='given', linestyle='-')
-plt.plot(indicies2, predicted_postures, marker='s', label='predicted', linestyle='--')
+# # Plot both arrays
+# plt.plot(indices, given_postures, marker='o', label='given', linestyle='-')
+# plt.plot(indicies2, predicted_postures, marker='s', label='predicted', linestyle='--')
 
-# Labels and title
-plt.xlabel('Index')
-plt.ylabel('Value')
-plt.title('Array Values vs. Index')
+# # Labels and title
+# plt.xlabel('Index')
+# plt.ylabel('Value')
+# plt.title('Array Values vs. Index')
 
-# Show legend
-plt.legend()
+# # Show legend
+# plt.legend()
 
-# Display the plot
-plt.show()
+# # Display the plot
+# plt.show()
