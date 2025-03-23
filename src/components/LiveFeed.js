@@ -69,10 +69,20 @@ function LiveFeed() {
       <video autoPlay muted style={{ width: '50%' }} /> {/* Placeholder */}
       <p className="pixelify-sans">Timer: {Math.floor(timer / 60)}m {timer % 60}s</p>
       <p className="pixelify-sans">Posture: {posture}</p>
-      <button onClick={togglePause}>
-        {isRunning ? 'Pause' : 'Continue'}
-      </button>
-      <button onClick={stopSession}>Stop</button>
+      <img 
+        src={isRunning ? "/assets/continue.png" : "/assets/paused.png"} 
+        alt={isRunning ? "Continue" : "Pause"} 
+        onClick={togglePause} 
+        className="control-btn animated-btn" 
+        style={{ width: '80px', height: '80px' }}
+      />
+      <img 
+        src="/assets/stop.png" 
+        alt="Stop" 
+        onClick={stopSession} 
+        className="control-btn animated-btn" 
+        style={{ width: '80px', height: '80px' }}
+      />
     </div>
   );
 }

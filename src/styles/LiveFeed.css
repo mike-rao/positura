@@ -8,3 +8,13 @@
     font-size: 26px; /* Increase size */
     color: #555483;
 }
+
+.animated-btn {
+    transition: transform 0.2s ease-in-out;
+    margin: 0 20px; /* Add horizontal space between buttons */
+  }
+  
+  .animated-btn:hover {
+    transform: scale(1.2);
+  }
+  
