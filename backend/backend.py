@@ -31,8 +31,8 @@ def posture_classification_loop():
     while running:
         posture = classify_posture()
         posture_log[posture] = posture_log.get(posture, 0) + 1
-        print(json.dumps({"posture": posture}))
-        sys.stdout.flush()
+        # print(json.dumps({"posture": posture}))
+        # sys.stdout.flush()
         time.sleep(1)
 
 def save_session():

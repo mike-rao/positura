@@ -25,8 +25,6 @@ function createWindow() {
     console.error('Failed to load URL:', err);
   });
 
-  mainWindow.webContents.openDevTools();
-
   pythonProcess = spawn('python', [path.join(__dirname, '../backend/backend.py')]);
   pythonProcess.stdout.on('data', (data) => {
     console.log('Python stdout:', data.toString());
