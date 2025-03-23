@@ -1,12 +1,17 @@
 .move-paragraph {
     margin-top: 310px; /* Reduced space between the top of the screen and the paragraph */
-    margin-bottom: -240px; /* Space between the paragraph and button */
     text-align: center; /* Center the text if needed */
     width: 100%; /* Optional, adjust width if required */
     max-width: 450px; /* Optional: set a maximum width to prevent it from stretching too wide */
     text-align: center; /* Optionally center the text */
     margin-left: auto; /* Center the paragraph horizontally */
     margin-right: auto; /* Center the paragraph horizontally */
+  }
+
+  .press-start {
+    padding-top: 10px;
+    max-width: 450px;
+    margin-bottom: -240px;
   }
   
   .study-button-container {
