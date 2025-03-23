@@ -127,7 +127,7 @@ function HistorySummary() {
       <img 
         src="/assets/back.png" 
         alt="back" 
-        className="back-button pixelify-sans" 
+        className="finish-button pixelify-sans" 
         onClick={handleBack} 
       />
     </div>
