@@ -78,24 +78,34 @@ body2 {
 }
 
 
-/* Container for minimize and close buttons */
 .window-controls {
     position: absolute;
-    top: 10px;   /* Space from the top */
+    top: 10px;
+    left: 10px; /* Space from the left */
     right: 10px; /* Space from the right */
     display: flex;
-    gap: 10px;   /* Space between buttons */
-}
+    justify-content: space-between; /* Distribute space evenly */
+    align-items: center; /* Vertically align items */
+    width:calc(100% - 20px)
+  }
 
-/* Style for both buttons */
-#minimize-btn, #close-btn {
-    /* margin-top: 20px; */
-    width: 30px;  /* Adjust size of buttons */
+  .right-controls {
+    display: flex;
+    gap: 10px;
+  }
+
+  /* Style for all buttons */
+  #home-btn,
+  #minimize-btn,
+  #close-btn {
+    width: 30px;
     height: 30px;
-    cursor: pointer;  /* Show pointer cursor on hover */
-}
+    cursor: pointer;
+  }
 
-/* Optional: Add hover effects for the buttons */
-#minimize-btn:hover, #close-btn:hover {
-    transform: scale(1.1); /* Slight zoom effect on hover */
-}
+  /* Optional: Add hover effects for the buttons */
+  #home-btn:hover,
+  #minimize-btn:hover,
+  #close-btn:hover {
+    transform: scale(1.1);
+  }

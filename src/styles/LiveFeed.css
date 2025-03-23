@@ -72,3 +72,25 @@
   justify-content: center;
   margin-top: -20px;
 }
+
+/* Container for minimize and close buttons */
+.lf-window-controls {
+    position: absolute;
+    top: 10px;   /* Space from the top */
+    right: 10px; /* Space from the right */
+    display: flex;
+    gap: 10px;   /* Space between buttons */
+}
+
+/* Style for both buttons */
+#lf-minimize-btn, #lf-close-btn {
+    /* margin-top: 20px; */
+    width: 30px;  /* Adjust size of buttons */
+    height: 30px;
+    cursor: pointer;  /* Show pointer cursor on hover */
+}
+
+/* Optional: Add hover effects for the buttons */
+#lf-minimize-btn:hover, #lf-close-btn:hover {
+    transform: scale(1.1); /* Slight zoom effect on hover */
+}
