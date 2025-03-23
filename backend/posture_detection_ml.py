@@ -4,7 +4,7 @@ import mediapipe as mp
 import numpy as np
 import csv
 import os
-from ml import predict_single_frame
+from ml_functions import predict_single_frame
 
 # !!!!!!!CHANGE AS NEEDED!!!!!!!
 camera = False
