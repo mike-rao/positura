@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getIpcRenderer } from '../utils/ipc';
 import '../styles/LiveFeed.css';
@@ -8,6 +8,8 @@ function LiveFeed() {
   const [timer, setTimer] = useState(0);
   const [isRunning, setIsRunning] = useState(true);
   const navigate = useNavigate();
+  
+  const lastNotificationTime = useRef({ Slouch: 0, "Lean Back": 0 });
 
   const postureImages = {
     "Good": "/assets/good_posture.png",
@@ -27,6 +29,7 @@ function LiveFeed() {
         console.log('Received python-message:', message);
         if (message.posture) {
           setPosture(message.posture);
+          sendPostureNotification(message.posture);
         }
       };
 
@@ -40,6 +43,22 @@ function LiveFeed() {
       console.error('electronAPI not available');
     }
   }, []);
+
+  const sendPostureNotification = (newPosture) => {
+    const currentTime = Date.now();
+    if (newPosture === "Slouch" || newPosture === "Lean Back") {
+      const lastTime = lastNotificationTime.current[newPosture] || 0;
+      if (currentTime - lastTime >= 60000) { // 60 seconds (1 minute)
+        new Notification("Posture Alert", {
+          body: newPosture === "Slouch" 
+            ? "You're slouching! Sit up straight to maintain good posture." 
+            : "You're leaning back too much! Keep a balanced posture.",
+          icon: postureImages[newPosture]
+        });
+        lastNotificationTime.current[newPosture] = currentTime;
+      }
+    }
+  };
 
   useEffect(() => {
     let interval;
@@ -89,7 +108,7 @@ function LiveFeed() {
         <img id="minimize-btn" src="/assets/minimize.png" alt="Minimize" onClick={handleMinimize} />
         <img id="close-btn" src="/assets/exit.png" alt="Close" onClick={handleClose} />
       </div>
-      
+
       {/* Live Feed Box */}
       <div className="live-feed-box">
         <div className="live-header">
@@ -102,14 +121,14 @@ function LiveFeed() {
           className="posture-image"
         />
       </div>
-      
+
       {/* Video and Posture */}
       <video autoPlay muted style={{ width: '50%' }} />
       <div className="status-container">
         <p className="pixelify-sans timer">Timer: {Math.floor(timer / 60)}m {timer % 60}s</p>
         <p className="pixelify-sans posture">Posture: {posture}</p>
       </div>
-      
+
       {/* Control Buttons */}
       <div className="control-buttons">
         <img
