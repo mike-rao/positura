@@ -89,29 +89,44 @@ function LiveFeed() {
         <img id="minimize-btn" src="/assets/minimize.png" alt="Minimize" onClick={handleMinimize} />
         <img id="close-btn" src="/assets/exit.png" alt="Close" onClick={handleClose} />
       </div>
-      <h2 className="pixelify-sans">Live Feed</h2>
+      
+      {/* Live Feed Box */}
+      <div className="live-feed-box">
+        <div className="live-header">
+          <h2 className="pixelify-sans">Live Feed</h2>
+          <div className="live-dot"></div>
+        </div>
+        <img
+          src={postureImages[posture] || postureImages["Unknown"]} // Fallback to "Unknown"
+          alt={posture}
+          className="posture-image"
+        />
+      </div>
+      
+      {/* Video and Posture */}
       <video autoPlay muted style={{ width: '50%' }} />
-      <img
-        src={postureImages[posture] || postureImages["Unknown"]} // Fallback to "Unknown"
-        alt={posture}
-        style={{ width: '150px', height: '150px', position: 'absolute', transform: 'translate(-150px, 0px)'}}
-      />
-      <p className="pixelify-sans">Timer: {Math.floor(timer / 60)}m {timer % 60}s</p>
-      <p className="pixelify-sans">Posture: {posture}</p>
-      <img
-        src={isRunning ? "/assets/continue.png" : "/assets/paused.png"}
-        alt={isRunning ? "Continue" : "Pause"}
-        onClick={togglePause}
-        className="control-btn animated-btn"
-        style={{ width: '80px', height: '80px' }}
-      />
-      <img
-        src="/assets/stop.png"
-        alt="Stop"
-        onClick={stopSession}
-        className="control-btn animated-btn"
-        style={{ width: '80px', height: '80px' }}
-      />
+      <div className="status-container">
+        <p className="pixelify-sans timer">Timer: {Math.floor(timer / 60)}m {timer % 60}s</p>
+        <p className="pixelify-sans posture">Posture: {posture}</p>
+      </div>
+      
+      {/* Control Buttons */}
+      <div className="control-buttons">
+        <img
+          src={isRunning ? "/assets/continue.png" : "/assets/paused.png"}
+          alt={isRunning ? "Continue" : "Pause"}
+          onClick={togglePause}
+          className="control-btn animated-btn"
+          style={{ width: '65px', height: '65px' }}
+        />
+        <img
+          src="/assets/stop.png"
+          alt="Stop"
+          onClick={stopSession}
+          className="control-btn animated-btn"
+          style={{ width: '65px', height: '65px' }}
+        />
+      </div>
     </div>
   );
 }

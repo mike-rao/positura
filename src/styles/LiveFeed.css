@@ -1,20 +1,74 @@
 @import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap');
 
 .pixelify-sans {
-    font-family: "Pixelify Sans", sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 500; /* Change to 400, 500, 600, 700 based on your need */
-    font-style: normal;
-    font-size: 26px; /* Increase size */
-    color: #555483;
+  font-family: "Pixelify Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+  font-size: 26px;
+  color: #555483;
 }
 
 .animated-btn {
-    transition: transform 0.2s ease-in-out;
-    margin: 0 20px; /* Add horizontal space between buttons */
+  transition: transform 0.2s ease-in-out;
+  margin: 0 20px;
+}
+
+.animated-btn:hover {
+  transform: scale(1.2);
+}
+
+/* New Styles */
+.live-feed-box {
+  border: 2px solid #555483; /* Add a border */
+  padding-bottom: 10px;
+  margin-top: 140px;
+  text-align: center; /* Center content horizontally */
+  position: relative; /* Needed for positioning the dot */
+}
+
+.live-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: -15px;
+}
+
+.live-dot {
+  width: 12px;
+  height: 12px;
+  background-color: red;
+  border-radius: 50%;
+  margin-left: 10px;
+  animation: blinker 1s linear infinite;
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
   }
-  
-  .animated-btn:hover {
-    transform: scale(1.2);
-  }
-  
+}
+
+.posture-image {
+  width: 125px;
+  height: 125px;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  margin-top: -15px;
+}
+
+.status-container {
+  margin-top: -100px;
+  margin-bottom: 20px;
+}
+
+.posture {
+    margin-top: -20px;
+}
+
+.control-buttons {
+  display: flex;
+  justify-content: center;
+  margin-top: -20px;
+}
