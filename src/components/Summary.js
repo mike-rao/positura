@@ -65,7 +65,7 @@ function Summary() {
     maintainAspectRatio: false,
     plugins: {
       legend: {
-        position: 'left',
+        position: 'right',
         align: 'start',
         labels: {
           font: {
