@@ -6,8 +6,8 @@ import csv
 import os
 
 # !!!!!!!CHANGE AS NEEDED!!!!!!!
-camera = False
-name = 'mike+angela' #only needed if using video file
+camera = True
+name = 'test' #only needed if using video file
 
 # Initialize MediaPipe Pose
 mp_pose = mp.solutions.pose
@@ -113,7 +113,7 @@ while cap.isOpened():
 
             # Determine  posture
             if hip_angle is not None:
-                if 85 < hip_angle < 110 and 120 < neck_angle < 150:
+                if 83 < hip_angle < 112 and 120 < neck_angle < 150:
                     # Hip angle is good, now check the neck
                         posture_status = "Good"
                 elif hip_angle <= 85:
@@ -124,7 +124,8 @@ while cap.isOpened():
                     posture_status = "Bad Posture"
                     
             # Write to CSV
-            data = [posture_status, hip_angle, neck_angle]
+            #data = [posture_status, hip_angle, neck_angle]
+            data = []
             for i in range(len(landmarks)):
                 data.append(landmarks[i].x)
                 data.append(landmarks[i].y)
