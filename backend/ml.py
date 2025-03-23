@@ -9,7 +9,8 @@ import csv
 import matplotlib.pyplot as plt
 
 # Load dataset
-data_path = 'backend/datasets/mike+angela_algorithm.csv'
+name = 'haoze'
+data_path = f'backend/datasets/{name}_algorithm.csv'
 df = pd.read_csv(data_path)
 
 # Extract columns
@@ -58,8 +59,13 @@ def predict_posture(new_csv_path):
     predicted_labels = label_encoder.inverse_transform(predictions)  # Convert back to original labels
     return predicted_labels
 
-# Example usage:
-test_path = 'backend/datasets/mike+angela.csv'
+def predict_single_frame(frame):
+    frame = np.array(frame).reshape(1, -1)  # Ensure it's in the correct shape
+    frame_scaled = scaler.transform(frame)  # Apply the same scaling
+    prediction = clf.predict(frame_scaled)  # Predict posture state
+    return label_encoder.inverse_transform(prediction)[0]
+
+test_path = f'backend/datasets/{name}.csv'
 predicted_postures = predict_posture(test_path)
 #print(predicted_postures)
 given_postures = []

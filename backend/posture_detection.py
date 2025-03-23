@@ -7,7 +7,7 @@ import os
 
 # !!!!!!!CHANGE AS NEEDED!!!!!!!
 camera = True
-name = 'test' #only needed if using video file
+name = 'test'
 
 # Initialize MediaPipe Pose
 mp_pose = mp.solutions.pose
